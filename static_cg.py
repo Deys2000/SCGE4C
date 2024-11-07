@@ -101,10 +101,13 @@ def analyze_function_calls(files, functions, includes):
         # 1. go through file AST to get all function->callee into a graph (mapping of key->set)
         calls_in_file = {}
         extract_function_calls(root_node, calls_in_file )    
+        print(calls_in_file)
+
         # 2. go through includes graph to get scope of file to search into a set
-        files_in_scope = set()
-        seen = set()
+        files_in_scope = set(); files_in_scope.add(file_path)
+        seen = set(); seen.add(file_path)
         get_all_included_files(files_in_scope, seen, file_path, includes)
+        print("FIS",files_in_scope)
 
         # 3. go through the calls set to search for the existence of a function with the same name in the scope set
         file_call_graph = {}
@@ -221,7 +224,7 @@ def output_steps(directory, files, functions, includes, externs, calls, output_p
     
 # Main
 if __name__ == "__main__":
-    directory = ".\\calculator"
+    directory = ".\\temp"
     files = collect_files(directory)
     functions, includes, externs = analyze_files(files)    
     call_graph = analyze_function_calls(files, functions, includes)    
